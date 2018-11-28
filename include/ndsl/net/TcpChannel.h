@@ -23,9 +23,9 @@ class TcpChannel : public Channel
   private:
     int sockfd_;
     int events_;
+    int revents_;
     EventLoop *pLoop_;
     ChannelCallBack *pCallBack_;
-    // TcpConnection *pCon_;
 
     // epoll事件注册
     int update();
@@ -43,6 +43,7 @@ class TcpChannel : public Channel
 
     int getFd();
     int getRevents();
+    int setRevents();
     int getEvents();
     EventLoop *getEventLoop();
 

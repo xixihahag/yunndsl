@@ -12,12 +12,13 @@
 #include <list>
 // #include <queue>
 #include <mutex>
-#include "ndsl/net/Channel.h"
+#include "../../../include/ndsl/net/Channel.h"
 
 namespace ndsl {
 namespace net {
 
 class Epoll;
+class EventLoop;
 
 // 定义work结构体
 struct work_struct

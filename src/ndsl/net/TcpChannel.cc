@@ -33,6 +33,12 @@ int TcpChannel::setCallBack(ChannelCallBack *pCB) { pCallBack_ = pCB; }
 
 int TcpChannel::getRevents() { return revents_; }
 
+int Channel::setRevents(int revents)
+{
+    revents_ = revents;
+    return S_OK;
+}
+
 EventLoop *TcpChannel::getEventLoop() { return pLoop_; }
 
 int TcpChannel::getEvents() { return events_; }

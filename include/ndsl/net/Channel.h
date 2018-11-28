@@ -11,16 +11,13 @@
 
 #ifndef __CHANNEL_H__
 #define __CHANNEL_H__
-#include "EventLoop.h"
+// #include "EventLoop.h"
 
 namespace ndsl {
 namespace net {
 
 class Channel
 {
-  private:
-    int revents_;
-
   public:
     virtual int onRead() = 0;
     virtual int onWrite() = 0;
@@ -28,8 +25,7 @@ class Channel
     virtual int handleEvent() = 0;
     virtual int getFd() = 0;
     virtual int getEvents() = 0;
-
-    int setRevents(int revents);
+    virtual int setRevents(int revents) = 0;
 };
 
 } // namespace net
