@@ -4,9 +4,7 @@
  *
  * Author: gyz
  * Email: mni_gyz@163.com
- * Last Modified: Saturday, 20th October 2018 3:46:27 pm
- * -----
- * Copyright 2018 - 2018
+ * Last Modified: Wednesday, 28th November 2018 10:41:40 pm
  */
 
 #ifndef __TCPCHANNEL_H__
@@ -22,8 +20,8 @@ class TcpChannel : public Channel
 {
   private:
     int sockfd_;
-    int events_;
-    int revents_;
+    uint64_t events_;
+    uint64_t revents_;
     EventLoop *pLoop_;
     ChannelCallBack *pCallBack_;
 
@@ -42,9 +40,9 @@ class TcpChannel : public Channel
     int handleEvent();
 
     int getFd();
-    int getRevents();
-    int setRevents();
-    int getEvents();
+    uint64_t getRevents();
+    uint64_t setRevents();
+    uint64_t getEvents();
     EventLoop *getEventLoop();
 
     int handleEvent();

@@ -9,9 +9,9 @@
 #include <errno.h>
 #include <sys/epoll.h>
 #include <string.h>
-#include "../../../include/ndsl/net/Epoll.h"
-#include "../../../include/ndsl/utils/temp_define.h"
-#include "../../../include/ndsl/net/Channel.h"
+#include "ndsl/net/Epoll.h"
+#include "ndsl/utils/temp_define.h"
+#include "ndsl/net/Channel.h"
 
 namespace ndsl {
 namespace net {

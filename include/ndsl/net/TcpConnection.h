@@ -4,9 +4,7 @@
  *
  * Author: gyz
  * Email: mni_gyz@163.com
- * Last Modified: Saturday, 20th October 2018 3:46:35 pm
- * -----
- * Copyright 2018 - 2018
+ * Last Modified: Wednesday, 28th November 2018 10:42:13 pm
  */
 
 #ifndef __TCPCONNECTION_H__
