@@ -13,6 +13,9 @@
 #include "ndsl/net/Channel.h"
 #include "ndsl/net/EventLoop.h"
 
+#include <iostream>
+using namespace std;
+
 namespace ndsl {
 namespace net {
 
@@ -236,6 +239,8 @@ int EventLoop::loop()
 {
     // 进入事件循环
     while (true) {
+        cout << "loop" << endl;
+
         // LOG(LEVEL_INFO, "In wait.\n");
         std::vector<Channel *> channels;
         epoll_->wait(channels, -1);
@@ -251,8 +256,11 @@ int EventLoop::loop()
                 quit = true;
             else if (pQueCh_->getFd() == (*it)->getFd())
                 haswork = true;
-            else
+            else {
+                cout << "find a task" << endl;
                 (*it)->handleEvent();
+            }
+
             // LOG(LEVEL_INFO, "handle event.\n");
         }
 

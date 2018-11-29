@@ -4,13 +4,16 @@
  *
  * Author: gyz
  * Email: mni_gyz@163.com
- * Last Modified: Thursday, 29th November 2018 10:53:34 am
+ * Last Modified: Thursday, 29th November 2018 2:23:14 pm
  */
 
-#include "../../../include/ndsl/net/TcpConnection.h"
-#include "../../../include/ndsl/utils/temp_define.h"
+#include "ndsl/net/TcpConnection.h"
+#include "ndsl/utils/temp_define.h"
 #include <cstring>
 #include <unistd.h>
+
+#include <iostream>
+using namespace std;
 
 namespace ndsl {
 namespace net {
@@ -26,13 +29,21 @@ int TcpConnection::createChannel(int sockfd, EventLoop *pLoop)
     pTcpChannel_ = new TcpChannel(sockfd, pLoop);
     pTcpChannel_->enableReading();
     pTcpChannel_->setCallBack(this);
+
+    cout << "TcpConnection::createChannel" << endl;
+
     return S_OK;
 }
 
 int TcpConnection::handleRead()
 {
+    cout << "TcpConnection::handleRead" << endl;
+
     memset(inBuf_, 0, sizeof(inBuf_));
     int sockfd = pTcpChannel_->getFd();
+
+    cout << "fd = " << sockfd << endl;
+
     if (sockfd < 0) { return -1; }
     int length;
     char line[MAXLINE];
@@ -46,7 +57,11 @@ int TcpConnection::handleRead()
         // cout << "read 0 closed socket fd:" << sockfd << endl;
         close(sockfd);
     } else {
+        cout << "length = " << length << endl;
+        cout << "receive buf = end" << line << endl;
+
         strcat(inBuf_, line);
+
         pTcpChannel_->onRead(inBuf_);
     }
     return S_OK;

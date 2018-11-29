@@ -13,6 +13,9 @@
 #include "ndsl/utils/temp_define.h"
 #include "ndsl/net/Channel.h"
 
+#include <iostream>
+using namespace std;
+
 namespace ndsl {
 namespace net {
 
@@ -37,6 +40,8 @@ int Epoll::regist(Channel *pCh)
     ev.data.ptr = pCh;
     ev.events = pCh->getEvents();
 
+    cout << "fd = " << pCh->getFd() << endl;
+
     int ret = ::epoll_ctl(epfd_, EPOLL_CTL_ADD, pCh->getFd(), &ev);
 
     if (ret < 0) {
@@ -47,6 +52,7 @@ int Epoll::regist(Channel *pCh)
         //     ret,
         //     errno,
         //     strerror(errno));
+        cout << "epoll_ctl error" << endl;
         LOG(LEVEL_DEBUG, "epoll::control regist\n");
         return errno;
     }
@@ -87,8 +93,12 @@ int Epoll::del(Channel *pCh)
 
 int Epoll::wait(std::vector<Channel *> &channels, int timeoutMs)
 {
+    cout << "Epoll::wait" << endl;
+
     struct epoll_event events[MAX_EVENTS];
     int ret = ::epoll_wait(epfd_, events, MAX_EVENTS, timeoutMs);
+
+    cout << "ret = " << ret << endl;
 
     if (ret < 0) {
         LOG(LEVEL_ERROR, "Epoll::wait epoll_wait\n");
