@@ -4,9 +4,7 @@
  *
  * Author: gyz
  * Email: mni_gyz@163.com
- * Last Modified: Wednesday, 28th November 2018 4:56:39 pm
- * -----
- * Copyright 2018 - 2018
+ * Last Modified: Thursday, 29th November 2018 9:58:09 am
  */
 
 #ifndef __CHANNELCALLBACK__
@@ -17,6 +15,7 @@ namespace net {
 
 class ChannelCallBack
 {
+  public:
     virtual int handleRead() = 0;
     virtual int handleWrite() = 0;
 };

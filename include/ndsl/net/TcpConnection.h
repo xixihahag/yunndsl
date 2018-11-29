@@ -4,7 +4,7 @@
  *
  * Author: gyz
  * Email: mni_gyz@163.com
- * Last Modified: Wednesday, 28th November 2018 10:42:13 pm
+ * Last Modified: Wednesday, 28th November 2018 10:57:51 pm
  */
 
 #ifndef __TCPCONNECTION_H__
@@ -12,9 +12,12 @@
 #include "TcpChannel.h"
 #include "EventLoop.h"
 #include "ChannelCallBack.h"
+#include "../utils/temp_define.h"
 
 namespace ndsl {
 namespace net {
+
+class TcpChannel;
 
 class TcpConnection : public ChannelCallBack
 {

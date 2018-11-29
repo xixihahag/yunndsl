@@ -4,11 +4,13 @@
  *
  * Author: gyz
  * Email: mni_gyz@163.com
- * Last Modified: Saturday, 20th October 2018 3:42:20 pm
- * -----
- * Copyright 2018 - 2018
+ * Last Modified: Thursday, 29th November 2018 10:53:34 am
  */
-#include "ndsl/net/TcpConnection.h"
+
+#include "../../../include/ndsl/net/TcpConnection.h"
+#include "../../../include/ndsl/utils/temp_define.h"
+#include <cstring>
+#include <unistd.h>
 
 namespace ndsl {
 namespace net {
@@ -24,6 +26,7 @@ int TcpConnection::createChannel(int sockfd, EventLoop *pLoop)
     pTcpChannel_ = new TcpChannel(sockfd, pLoop);
     pTcpChannel_->enableReading();
     pTcpChannel_->setCallBack(this);
+    return S_OK;
 }
 
 int TcpConnection::handleRead()
@@ -44,8 +47,9 @@ int TcpConnection::handleRead()
         close(sockfd);
     } else {
         strcat(inBuf_, line);
-        pTcpChannel_->onRead(this, &inBuf_);
+        pTcpChannel_->onRead(inBuf_);
     }
+    return S_OK;
 }
 
 int TcpConnection::handleWrite()
@@ -65,10 +69,11 @@ int TcpConnection::handleWrite()
         } else {
             // 这一次还没传完
             strncpy(temp, outBuf_ + n, length - n);
-            memsset(outBuf_, 0, sizeof(outBuf_));
+            memset(outBuf_, 0, sizeof(outBuf_));
             strcpy(outBuf_, temp);
         }
     }
+    return S_OK;
 }
 
 int TcpConnection::send(char *outBuf)
@@ -84,8 +89,9 @@ int TcpConnection::send(char *outBuf)
         // 一次write没写完
         if (!pTcpChannel_->isWriting()) pTcpChannel_->enableWriting();
         strcat(outBuf_, outBuf + n);
-        memset(outBuf, 0, sizeof(outBuf));
+        // memset(outBuf, 0, sizeof(outBuf));
     }
+    return S_OK;
 }
 
 } // namespace net

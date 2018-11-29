@@ -4,9 +4,7 @@
  *
  * Author: gyz
  * Email: mni_gyz@163.com
- * Last Modified: Saturday, 20th October 2018 3:46:31 pm
- * -----
- * Copyright 2018 - 2018
+ * Last Modified: Thursday, 29th November 2018 10:53:01 am
  */
 
 #include "../../../include/ndsl/net/TcpChannel.h"
@@ -20,20 +18,32 @@ TcpChannel::TcpChannel(int sockfd, EventLoop *loop)
     , pLoop_(loop)
 {}
 
-int TcpChannel::onRead(TcpConnection *pCon, char *inBuf) { pCon->send(inBuf_); }
-int TcpChannel::onWrite() {}
+// Channel::~Channel() {}
+
+int TcpChannel::onRead(char *inBuf)
+{
+    // 强制类型转换成实际的类
+    ((TcpConnection *) pCallBack_)->send(inBuf);
+    return S_OK;
+}
+int TcpChannel::onWrite() { return S_OK; }
 
 int TcpChannel::handleEvent()
 {
     if (getRevents() & EPOLLIN) { pCallBack_->handleRead(); }
-    if (getRevents() & EPOLLOUT) { pCpCallBack_->handleWrite(); }
+    if (getRevents() & EPOLLOUT) { pCallBack_->handleWrite(); }
+    return S_OK;
 }
 
-int TcpChannel::setCallBack(ChannelCallBack *pCB) { pCallBack_ = pCB; }
+int TcpChannel::setCallBack(ChannelCallBack *pCB)
+{
+    pCallBack_ = pCB;
+    return S_OK;
+}
 
-int TcpChannel::getRevents() { return revents_; }
+uint64_t TcpChannel::getRevents() { return revents_; }
 
-int Channel::setRevents(int revents)
+int TcpChannel::setRevents(uint64_t revents)
 {
     revents_ = revents;
     return S_OK;
@@ -41,35 +51,46 @@ int Channel::setRevents(int revents)
 
 EventLoop *TcpChannel::getEventLoop() { return pLoop_; }
 
-int TcpChannel::getEvents() { return events_; }
+uint64_t TcpChannel::getEvents() { return events_; }
 
 int TcpChannel::enableReading()
 {
     events_ |= EPOLLIN;
-    register();
+    regist();
+    return S_OK;
 }
 
 int TcpChannel::enableWriting()
 {
     events_ |= EPOLLOUT;
     update();
+    return S_OK;
 }
 
 int TcpChannel::disableWriting()
 {
     events_ &= ~EPOLLOUT;
     update();
+    return S_OK;
 }
 
 int TcpChannel::isWriting() { return events_ & EPOLLOUT; }
 
-int TcpChannel::update() { getEventLoop()->update(this); }
+int TcpChannel::update()
+{
+    getEventLoop()->update(this);
+    return S_OK;
+}
 
-int TcpChannel::regist() { getEventLoop()->register(this); }
+int TcpChannel::regist()
+{
+    getEventLoop()->regist(this);
+    return S_OK;
+}
 
-int TcpChannel::del() {}
+int TcpChannel::del() { return S_OK; }
 
-int TcpChannel::getFd() { return fd_; }
+int TcpChannel::getFd() { return sockfd_; }
 
 } // namespace net
 } // namespace ndsl

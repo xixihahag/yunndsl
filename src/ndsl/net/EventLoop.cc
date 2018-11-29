@@ -76,7 +76,7 @@ QueueChannel::~QueueChannel()
 void QueueChannel::addWork(work_struct *work) { workqueue_.enQueue(work); }
 
 // 没有重载
-int QueueChannel::onRead()
+int QueueChannel::onRead(char *inBuf)
 {
     LOG(LEVEL_ERROR, "Wrong call QueueChannel::onRead");
     return S_FAIL;
@@ -137,7 +137,7 @@ InterruptChannel::~InterruptChannel()
     if (fd_ >= 0) { ::close(fd_); }
 }
 
-int InterruptChannel::onRead()
+int InterruptChannel::onRead(char *inBuf)
 {
     LOG(LEVEL_ERROR, "Wrong call InterruptChannel::onRead");
     return S_FAIL;

@@ -4,7 +4,7 @@
  *
  * Author: gyz
  * Email: mni_gyz@163.com
- * Last Modified: Wednesday, 28th November 2018 10:41:40 pm
+ * Last Modified: Thursday, 29th November 2018 10:42:13 am
  */
 
 #ifndef __TCPCHANNEL_H__
@@ -12,9 +12,12 @@
 #include "Channel.h"
 #include "TcpConnection.h"
 #include "ChannelCallBack.h"
+#include "EventLoop.h"
 
 namespace ndsl {
 namespace net {
+
+class TcpConnection;
 
 class TcpChannel : public Channel
 {
@@ -31,22 +34,21 @@ class TcpChannel : public Channel
     int del();
 
   public:
-    TcpChannel(EventLoop *loop, int sockfd);
+    TcpChannel(int sockfd, EventLoop *loop);
+    // ~Channel();
 
     // 回调
-    int onRead(TcpConnection *pCon, char *inBuf);
+    int onRead(char *inBuf);
     int onWrite();
-
-    int handleEvent();
 
     int getFd();
     uint64_t getRevents();
-    uint64_t setRevents();
+    int setRevents(uint64_t revents);
     uint64_t getEvents();
     EventLoop *getEventLoop();
 
     int handleEvent();
-    int setCallBack(TcpConnection *pCon);
+    int setCallBack(ChannelCallBack *pCB);
 
     // epoll 事件管理
     int enableReading();
