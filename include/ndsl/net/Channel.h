@@ -1,12 +1,10 @@
 /*
- * File: Channel.h
- * brief:
+ * @file Channel.h
+ * @brief
  *
- * Author: gyz
- * Email: mni_gyz@163.com
- * Last Modified: Thursday, 29th November 2018 10:42:18 am
+ * @author gyz
+ * @email mni_gyz@163.com
  */
-
 #ifndef __CHANNEL_H__
 #define __CHANNEL_H__
 #include <stdint.h>
