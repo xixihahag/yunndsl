@@ -88,7 +88,7 @@ int QueueChannel::onRead(char *inBuf)
 // 发送中断信号
 int QueueChannel::onWrite()
 {
-    uint64_t data = 1;
+    uint32_t data = 1;
     int ret = ::write(fd_, &data, sizeof(data));
 
     if (ret == -1) {
@@ -110,9 +110,9 @@ int QueueChannel::handleEvent()
 
 int QueueChannel::getFd() { return fd_; }
 
-uint64_t QueueChannel::getEvents() { return events_; }
+uint32_t QueueChannel::getEvents() { return events_; }
 
-int QueueChannel::setRevents(uint64_t revents)
+int QueueChannel::setRevents(uint32_t revents)
 {
     revents_ = revents;
     return S_OK;
@@ -148,7 +148,7 @@ int InterruptChannel::onRead(char *inBuf)
 
 int InterruptChannel::onWrite()
 {
-    uint64_t data;
+    uint32_t data;
     data = 1;
 
     int ret = ::write(fd_, &data, sizeof(data));
@@ -169,9 +169,9 @@ int InterruptChannel::handleEvent()
 
 int InterruptChannel::getFd() { return fd_; }
 
-uint64_t InterruptChannel::getEvents() { return events_; }
+uint32_t InterruptChannel::getEvents() { return events_; }
 
-int InterruptChannel::setRevents(uint64_t revents)
+int InterruptChannel::setRevents(uint32_t revents)
 {
     revents_ = revents;
     return S_OK;

@@ -23,10 +23,10 @@ class TcpChannel : public Channel
 {
   private:
     int sockfd_;
-    uint64_t events_;
-    uint64_t revents_;
-    EventLoop *pLoop_;
-    ChannelCallBack *pCallBack_;
+    // uint32_t events_;
+    // uint32_t revents_;
+    // EventLoop *pLoop_;
+    TcpConnection *pCon_;
 
     // epoll事件注册
     int update();
@@ -38,17 +38,18 @@ class TcpChannel : public Channel
     // ~Channel();
 
     // 回调
-    int onRead(char *inBuf);
-    int onWrite();
+    int onRead(void *inBuf);
+    int onWrite(void *param);
+    int registOnReadWrite(); // 用于注册回调函数onRead/onWrite
 
     int getFd();
-    uint64_t getRevents();
-    int setRevents(uint64_t revents);
-    uint64_t getEvents();
+    uint32_t getRevents();
+    int setRevents(uint32_t revents);
+    uint32_t getEvents();
     EventLoop *getEventLoop();
 
     int handleEvent();
-    int setCallBack(ChannelCallBack *pCB);
+    int setCallBack(TcpConnection *pCon);
 
     // epoll 事件管理
     int enableReading();
