@@ -19,42 +19,63 @@ namespace net {
 TcpChannel::TcpChannel(int sockfd, EventLoop *loop)
     : sockfd_(sockfd)
     , pLoop_(loop)
-{}
+{
+    registOnReadWrite();
+}
 
 // Channel::~Channel() {}
 
-int TcpChannel::onRead(char *inBuf)
+int TcpChannel::onRead(void *inBuf)
 {
-    // 强制类型转换成实际的类
-    // ((TcpConnection *) pCallBack_)->send(inBuf);
-    // return S_OK;
+    // 在这相应的做用户调用onRecv的处理
+    if (callOnRecv) {
+        pCon_->sRecvParam_.buffer = static_cast<char *>(inBuf);
+        pCon_->sRecvParam_.length = strlen(static_cast<char *>(inBuf));
 
-    // 测试可以在这动手脚
-    char temp[MAXLINE] = "received";
-    ((TcpConnection *) pCallBack_)->send(temp);
-    return S_OK;
+        // 塞给loop做回调的处理
+        struct work_struct *recvStruct = new struct work_struct();
+        recvStruct->doit = pCon_->sRecvParam_.cb;
+        recvStruct->param = pCon_->sRecvParam_.para;
+        pLoop_->addWork(recvStruct);
+    } else {
+        //强制类型转换成实际的类
+        pCon_->send(static_cast<char *>(inBuf));
+        return S_OK;
+
+        // 测试可以在这动手脚
+        // char temp[MAXLINE] = "received";
+        // ((TcpConnection *) pCallBack_)->send(temp);
+        // return S_OK;
+    }
 }
 
-int TcpChannel::onWrite() { return S_OK; }
+int TcpChannel::onWrite(void *param) { return S_OK; }
+
+// 注册onRead函数和onWrite函数
+int TcpChannel::registOnReadWrite()
+{
+    onRead = &onRead;
+    onWrite = &onWrite;
+    return S_OK;
+}
 
 int TcpChannel::handleEvent()
 {
-    cout << "TcpChannel::handleEvent" << endl;
-
-    if (getRevents() & EPOLLIN) { pCallBack_->handleRead(); }
-    if (getRevents() & EPOLLOUT) { pCallBack_->handleWrite(); }
+    // TcpConnection *pThis = reinterpret_cast<TcpConnection *>(param);
+    if (getRevents() & EPOLLIN) { pCon_->handleRead(); }
+    if (getRevents() & EPOLLOUT) { pCon_->handleWrite(); }
     return S_OK;
 }
 
-int TcpChannel::setCallBack(ChannelCallBack *pCB)
+int TcpChannel::setCallBack(TcpConnection *pCon)
 {
-    pCallBack_ = pCB;
+    pCon_ = pCon_;
     return S_OK;
 }
 
-uint64_t TcpChannel::getRevents() { return revents_; }
+uint32_t TcpChannel::getRevents() { return revents_; }
 
-int TcpChannel::setRevents(uint64_t revents)
+int TcpChannel::setRevents(uint32_t revents)
 {
     revents_ = revents;
     return S_OK;
@@ -62,7 +83,7 @@ int TcpChannel::setRevents(uint64_t revents)
 
 EventLoop *TcpChannel::getEventLoop() { return pLoop_; }
 
-uint64_t TcpChannel::getEvents() { return events_; }
+uint32_t TcpChannel::getEvents() { return events_; }
 
 int TcpChannel::enableReading()
 {
