@@ -1,12 +1,10 @@
 /*
- * File: TcpConnection.cc
- * brief:
+ * @file TcpConnection.cc
+ * @brief
  *
- * Author: gyz
- * Email: mni_gyz@163.com
- * Last Modified: Thursday, 29th November 2018 2:23:14 pm
+ * @author gyz
+ * @email mni_gyz@163.com
  */
-
 #include "ndsl/net/TcpConnection.h"
 #include "ndsl/utils/temp_define.h"
 #include "ndsl/net/Multiplexer.h"

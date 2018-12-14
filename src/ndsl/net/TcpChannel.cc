@@ -25,31 +25,9 @@ TcpChannel::TcpChannel(int sockfd, EventLoop *loop)
 
 // Channel::~Channel() {}
 
-int TcpChannel::onRead(void *inBuf)
-{
-    // 在这相应的做用户调用onRecv的处理
-    if (callOnRecv) {
-        pCon_->sRecvParam_.buffer = static_cast<char *>(inBuf);
-        pCon_->sRecvParam_.length = strlen(static_cast<char *>(inBuf));
+// int TcpChannel::onRead(void *inBuf) {}
 
-        // 塞给loop做回调的处理
-        struct work_struct *recvStruct = new struct work_struct();
-        recvStruct->doit = pCon_->sRecvParam_.cb;
-        recvStruct->param = pCon_->sRecvParam_.para;
-        pLoop_->addWork(recvStruct);
-    } else {
-        //强制类型转换成实际的类
-        pCon_->send(static_cast<char *>(inBuf));
-        return S_OK;
-
-        // 测试可以在这动手脚
-        // char temp[MAXLINE] = "received";
-        // ((TcpConnection *) pCallBack_)->send(temp);
-        // return S_OK;
-    }
-}
-
-int TcpChannel::onWrite(void *param) { return S_OK; }
+// int TcpChannel::onWrite(void *param) { return S_OK; }
 
 // 注册onRead函数和onWrite函数
 int TcpChannel::registOnReadWrite()

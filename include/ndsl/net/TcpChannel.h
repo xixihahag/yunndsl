@@ -38,8 +38,8 @@ class TcpChannel : public Channel
     // ~Channel();
 
     // 回调
-    int onRead(void *inBuf);
-    int onWrite(void *param);
+    // int onRead(void *inBuf);
+    // int onWrite(void *param);
     int registOnReadWrite(); // 用于注册回调函数onRead/onWrite
 
     int getFd();

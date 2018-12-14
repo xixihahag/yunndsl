@@ -57,8 +57,7 @@ class TcpConnection
         const struct msghdr *msg,
         int flags,
         Callback cb,
-        void *param)
-    {}
+        void *param);
 
     // onSend onRecv 的语义是异步通知
 
